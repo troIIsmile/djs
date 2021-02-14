@@ -51,7 +51,9 @@ class Bot extends Trollsmile<Message, CommandObj> {
     })
     this.client.login(token)
     this.load_cmds()
-    this.activityChanger()
+    this.client.on('ready', () => {
+      this.activityChanger()
+    })
   }
   async load_cmds () {
     const files_in_commands = await rreaddir('./commands/')
@@ -69,7 +71,11 @@ class Bot extends Trollsmile<Message, CommandObj> {
   }
   activityChanger () {
     // activityChanger from esmBot, also known as "the gamer code"
-    this.client.user?.setActivity(all.random())
+    const message = all.random()
+    console.log('trollsmile:', message)
+    this.client.user!.setActivity(message, {
+      type: 'LISTENING'
+    })
     setTimeout(this.activityChanger.bind(this), 900000)
   }
 }
