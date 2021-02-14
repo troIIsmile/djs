@@ -1,6 +1,5 @@
 import { MessageOptions, version as discordVersion } from 'discord.js'
 import { Bot } from '../../utils/types'
-import fetch from 'node-fetch'
 import { createRequire } from "module"
 const require = createRequire(import.meta.url)
 const { homepage: url, version } = require('../../package.json')
