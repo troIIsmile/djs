@@ -1,0 +1,41 @@
+{
+  "name": "trollsmile-next",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "jackbot-next: the sequel",
+  "private": true,
+  "main": "init.js",
+  "homepage": "https://troIIsmile.github.io",
+  "scripts": {
+    "test": "echo no",
+    "build": "tsc",
+    "start": "node init.js"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "links": {
+    "repository": "github:troIIsmile/next"
+  },
+  "repository": "troIIsmile/next",
+  "bugs": "https://github.com/troIIsmile/next/issues/",
+  "author": "Jack5079",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "fs": "^0.0.1-security",
+    "google-tts-api": "^2.0.1",
+    "nintendo-switch-eshop": "^4.0.0",
+    "node": "^14.15.1",
+    "node-fetch": "^2.6.1",
+    "trollsmile-core": "^4.0.0",
+    "ytdl-core": "^4.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^14.6.0",
+    "@types/node-fetch": "^2.5.5",
+    "@types/ws": "^7.4.0",
+    "tslib": "^2.1.0",
+    "typescript": "^4.0.2"
+  }
+}
