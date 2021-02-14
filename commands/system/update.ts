@@ -26,8 +26,8 @@ export async function run (
       }
     })
     try {
-      await shell('git fetch origin master')
-      await shell('git reset --hard origin/master')
+      await shell('git fetch origin main')
+      await shell('git reset --hard origin/main')
       msg.edit({
         embed: {
           author: {
