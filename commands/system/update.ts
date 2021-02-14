@@ -12,12 +12,11 @@ const shell = (str: string) => new Promise<string>((resolve, reject) => {
 interface Step {
   name: string
   run (this: Bot): void | Promise<void>
-  start?: number
+  time?: number
 }
 
 async function update (this: Bot, message: Message, steps: Step[]) {
   const brand = `${this.client.user?.username || 'trollsmile'} update`
-  const start = new Date
   const msg = await message.channel.send({
     embed: {
       author: {
@@ -40,7 +39,7 @@ async function update (this: Bot, message: Message, steps: Step[]) {
       }
     })
     await step.run.call(this)
-    step.start = new Date().getTime() - step_start.getTime()
+    step.time = new Date().getTime() - step_start.getTime()
   }
   msg.edit({
     embed: {
@@ -49,11 +48,11 @@ async function update (this: Bot, message: Message, steps: Step[]) {
         icon_url: this.client.user?.avatarURL() || undefined
       },
       color: 'GREEN',
-      title: `Update complete! Took ${(new Date().getTime() - start.getTime())}ms`,
+      title: `Update complete! Took ${steps.reduce((a, b) => a + b.time!, 0)}ms`,
       description: 'Restart the bot to reload events and messages.',
       fields: steps.map(step => ({
         name: step.name,
-        value: `${step.start || 0}ms`,
+        value: `${step.time!}ms`,
         inline: true
       }))
     }
