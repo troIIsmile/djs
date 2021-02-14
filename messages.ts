@@ -12,17 +12,30 @@ const messages: Nested<string> = {
     'Scatman John': ["Scatman's World"],
     'Alex Arcoleo': ['Bloom 7'],
     'Neil Cicierega': ['Wow Wow', 'The Starting Line'],
-    'Big Shaq': ["Man Don't Dance", 'Mans Not Hot'],
+    'Lil Nas X': [
+      'Montero (Call Me By Your Name)',
+      'funny horse song'
+    ],
     TOPAZ: [
       // topazzz.bandcamp.com to be exact
       'Half Awake, Pt. 2',
-      'Half Awake, Pt. 1'
+      'Half Awake, Pt. 1',
+      'Sirens'
+    ],
+    deadmau5: [
+      'Bridged By A Lightwave',
+      'Glivch',
+      'Are You Not Afraid',
+      'minecraft skin with ear,, how'
+    ],
+    trollsmile: [
+      'trollsmile admin welcome sound 10 hour loop',
+      'trollsmile winning (feat. LuaQuack)',
+      'trollsmile on top (feat. the troiismile Roblox account)'
     ],
     'Fatty Spins': [
       "Doin' Your Mom" // you know we straight
     ],
-    'FAT DAMON': ['Conspiracy Theory Guy'],
-    'Your Favorite Martian': ["Grandma's Got A Facebook", "STALKIN' YOUR MOM"],
     "Nero's Day At Disneyland": [
       "In Aisles",
       "Civilizing People",
