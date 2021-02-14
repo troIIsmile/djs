@@ -1,7 +1,6 @@
 import { Message, Client, Collection, Intents } from 'discord.js'
 import Trollsmile from "trollsmile-core"
 import { CommandObj } from "./utils/types"
-import { fileURLToPath } from 'url'
 import process from 'process'
 import path, { basename } from 'path'
 import { existsSync, readFileSync as readFile } from "fs"
@@ -9,33 +8,13 @@ import { createServer, ServerResponse } from "http"
 import { rreaddir } from "./utils/rreaddir.js"
 import fetch from 'node-fetch'
 import { all } from "./messages.js"
+import { isMain } from "./utils/isMain.js"
 
 globalThis.fetch = fetch as any // shit workaround in case i missed anything
 globalThis.Array.prototype.random = function () {
   return this[Math.floor(Math.random() * this.length)]
 }
 
-
-export function stripExt (name: string) {
-  const extension = path.extname(name)
-  if (!extension) {
-    return name
-  }
-
-  return name.slice(0, -extension.length)
-}
-
-function isMain (meta: ImportMeta) {
-  const modulePath = fileURLToPath(meta.url)
-
-  const scriptPath = process.argv[1]
-  const extension = path.extname(scriptPath)
-  if (extension) {
-    return modulePath === scriptPath
-  }
-
-  return stripExt(modulePath) === scriptPath
-}
 
 class Bot extends Trollsmile<Message, CommandObj> {
   filter (message: Message) {
