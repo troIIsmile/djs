@@ -16,12 +16,6 @@ const messages: Nested<string> = {
       'Montero (Call Me By Your Name)',
       'funny horse song'
     ],
-    TOPAZ: [
-      // topazzz.bandcamp.com to be exact
-      'Half Awake, Pt. 2',
-      'Half Awake, Pt. 1',
-      'Sirens'
-    ],
     deadmau5: [
       'Bridged By A Lightwave',
       'Glivch',
