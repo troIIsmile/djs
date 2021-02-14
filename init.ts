@@ -72,6 +72,7 @@ class Bot extends Trollsmile<Message, CommandObj> {
     })
     this.client.login(token)
     this.load_cmds()
+    this.activityChanger()
   }
   async load_cmds () {
     const files_in_commands = await rreaddir('./commands/')
