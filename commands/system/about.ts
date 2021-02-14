@@ -15,11 +15,6 @@ export async function run (this: Bot): Promise<MessageOptions> {
   if (!(this.client.user && owner)) return {
     content: 'oops the owner or the bot user does not exist some how'
   }
-
-  const esmBotMessages: string[] = await fetch('https://raw.githubusercontent.com/TheEssem/esmBot/master/messages.json').then(res => res.json())
-  const messages = (await import('../../messages.js')).all
-  const linesFromEsmBot = messages.filter(line => esmBotMessages.includes(line)).length
-  const percentOfLines = (linesFromEsmBot * 100) / messages.length
   return {
     embed: {
       author: {
@@ -33,12 +28,6 @@ export async function run (this: Bot): Promise<MessageOptions> {
         iconURL: owner.displayAvatarURL()
       },
       fields: [{
-        name: '✏ Credits',
-        value: `
-        URL for the -achievement command from esmBot by Essem#9261
-        [${percentOfLines.toFixed(5)}% of the "Playing" messages from esmBot](https://github.com/TheEssem/esmBot/blob/master/messages.json)`,
-        inline: false
-      }, {
         name: '💬 Server Count',
         value: this.client.guilds.cache.size,
         inline: true
