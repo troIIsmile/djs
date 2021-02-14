@@ -32,10 +32,6 @@ export async function run (this: Bot): Promise<MessageOptions> {
         value: this.client.guilds.cache.size,
         inline: true
       }, {
-        name: '🧑🏻 User Count',
-        value: this.client.users.cache.size,
-        inline: true
-      }, {
         name: 'ℹ Bot Version',
         value: version, inline: true
       }, {
