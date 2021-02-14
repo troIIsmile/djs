@@ -11,7 +11,7 @@ const shell = (str: string) => new Promise<string>((resolve, reject) => {
 })
 interface Step {
   name: string
-  run (this: Bot): void | Promise<void>
+  run: ((this: Bot) => void | Promise<void>) | string | string[]
   time?: number
 }
 
@@ -38,7 +38,15 @@ async function update (this: Bot, message: Message, steps: Step[]) {
         title: step.name
       }
     })
-    await step.run.call(this)
+    if (typeof step.run === 'string') {
+      await shell(step.run)
+    } else if (Array.isArray(step.run)) {
+      for (const command of step.run) {
+        await shell(command)
+      }
+    } else {
+      await step.run.call(this)
+    }
     step.time = new Date().getTime() - step_start.getTime()
   }
   msg.edit({
@@ -67,27 +75,20 @@ export async function run (
     update.call(this, message, [
       {
         name: 'Downloading latest trollsmile...',
-        async run () {
-          await shell('git fetch origin main')
-          await shell('git reset --hard origin/main')
-        }
+        run: ['git fetch origin main', 'git reset --hard origin/main']
       },
       {
         name: 'Updating dependencies...',
-        async run () {
-          await shell('npm i')
-        }
+        run: 'npm i'
       },
       {
         name: 'Compiling...',
-        async run () {
-          await shell(
-            platform() === 'win32'
-              ? 'PowerShell -Command "rm commands/**/*.js"'
-              : 'rm commands/**/*.js'
-          ) // remove previous files because what if i deleted a command
-          await shell('npx tsc')
-        }
+        run: [
+          (platform() === 'win32'
+            ? 'PowerShell -Command "rm commands/**/*.js"'
+            : 'rm commands/**/*.js'),
+          'npx tsc'
+        ]
       },
       {
         name: 'Reloading all commands...',
