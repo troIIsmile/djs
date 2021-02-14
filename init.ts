@@ -8,6 +8,7 @@ import { existsSync, readFileSync as readFile } from "fs"
 import { createServer, ServerResponse } from "http"
 import { rreaddir } from "./utils/rreaddir.js"
 import fetch from 'node-fetch'
+import { all } from "./messages.js"
 
 globalThis.fetch = fetch as any // shit workaround in case i missed anything
 globalThis.Array.prototype.random = function () {
@@ -85,6 +86,11 @@ class Bot extends Trollsmile<Message, CommandObj> {
       }
       this.commands.set(basename(file, '.js'), command)
     })
+  }
+  activityChanger () {
+    // activityChanger from esmBot, also known as "the gamer code"
+    this.client.user?.setActivity(all.random())
+    setTimeout(this.activityChanger.bind(this), 900000)
   }
 }
 
