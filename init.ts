@@ -22,7 +22,7 @@ class Bot extends Trollsmile<Message, CommandObj> {
   }
   client: Client
   commands = new Collection<string, CommandObj>()
-  constructor(prefix: string, token?: string) {
+  constructor(prefix: string) {
     super(prefix)
     this.client = new Client({
       ws: {
@@ -49,7 +49,7 @@ class Bot extends Trollsmile<Message, CommandObj> {
         }
       })
     })
-    this.client.login(token)
+    this.client.login() // process.env.DISCORD_TOKEN
     this.load_cmds()
     this.client.on('ready', () => {
       this.activityChanger()
@@ -103,7 +103,7 @@ if (isMain(import.meta)) {
           .map(line => line.split('=')) // split the lines into key:value pairs
       ))
   }
-  new Bot('-', process.env.TOKEN)
+  new Bot('-')
 }
 
 export default Bot
