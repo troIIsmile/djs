@@ -12,8 +12,7 @@
     "moduleResolution": "Node",
     "inlineSourceMap": true,
     "experimentalDecorators": true,
-    "resolveJsonModule": false,
-    "incremental": true
+    "resolveJsonModule": false
   },
   "exclude": [
     "node_modules",
