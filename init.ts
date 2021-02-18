@@ -4,7 +4,7 @@ import { CommandObj } from "./utils/types"
 import process from 'process'
 import path, { basename } from 'path'
 import { existsSync, readFileSync as readFile } from "fs"
-import { createServer, ServerResponse } from "http"
+import { createServer } from "http"
 import { rreaddir } from "./utils/rreaddir.js"
 import fetch from 'node-fetch'
 import { all } from "./messages.js"
@@ -83,7 +83,7 @@ class Bot extends Trollsmile<Message, CommandObj> {
 if (isMain(import.meta)) {
   // replit redirect
   if (process.env.REPLIT_DB_URL) {
-    createServer((_, res: ServerResponse) => {
+    createServer((_, res) => {
       res.writeHead(200, {
         'Content-Type': 'text/html'
       })

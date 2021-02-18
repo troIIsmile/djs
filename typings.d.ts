@@ -11,3 +11,35 @@ declare module 'google-tts-api' {
     }
   ): string
 }
+
+
+interface UnfluffOut {
+  title: string,
+  softTitle: string
+  date: string
+  copyright: string
+  author: string[]
+  publisher: string
+  text: string
+  description: string
+  tags: string[]
+  videos: string[]
+  canonicalLink: string
+  image?: string
+  lang: string
+  links: { text: string, href: string }[]
+  favicon: string
+}
+
+type LazyUnfluff = {
+  [key in keyof UnfluffOut]: () => UnfluffOut[key]
+}
+
+declare const unfluff: {
+  (html: string, lang?: string): UnfluffOut
+  lazy (html: string, lang?: string): LazyUnfluff
+}
+
+declare module 'unfluff' {
+  export = unfluff
+}
