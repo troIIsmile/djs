@@ -22,7 +22,7 @@ export async function run (this: Bot, message: Message, args: string[]): Promise
         url: image,
       },
       footer: {
-        text: `Pubished by ${publisher}. © ${copyright}`
+        text: `Published by ${publisher}. © ${copyright}`
       }
     }
   }
