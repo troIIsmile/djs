@@ -21,5 +21,7 @@ npm start
 
 Start the bot, and then DM it "-update"
 
+**This will overwrite local changes.**
+
 ---
 ![powered by trollsmile](https://nxtbot.ml/powered%20by%202.svg)
