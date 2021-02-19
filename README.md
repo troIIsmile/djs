@@ -19,7 +19,7 @@ npm start
 
 ## Updating
 
-Start the bot, and then DM it "-update"
+DM the bot "-update" while it's running.
 
 **This will overwrite local changes.**
 
