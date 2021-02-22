@@ -22,6 +22,7 @@ const messages: Nested<string> = {
       'Are You Not Afraid',
       'minecraft skin with ear,, how'
     ],
+    'Diamond Eyes': ['Everything'],
     trollsmile: [
       'trollsmile admin welcome sound 10 hour loop',
       'trollsmile winning (feat. LuaQuack)',

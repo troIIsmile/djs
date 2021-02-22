@@ -3,14 +3,20 @@ import Trollsmile from "trollsmile-core"
 import { CommandObj } from "./utils/types"
 import process from 'process'
 import path, { basename } from 'path'
-import { existsSync, readFileSync as readFile } from "fs"
-import { createServer } from "http"
-import { rreaddir } from "./utils/rreaddir.js"
+import { existsSync as exists, readFileSync as read_file } from "fs"
+import { createServer as server } from "http"
+import { recursive_readdir } from "./utils/rreaddir.js"
 import fetch from 'node-fetch'
 import { all } from "./messages.js"
-import { isMain } from "./utils/isMain.js"
+import { isMain as is_main } from "./utils/isMain.js"
 
-globalThis.fetch = fetch as any // shit workaround in case i missed anything
+// So some files don't import node-fetch
+// I actually don't know how it happened
+// But just in case
+// we set fetch as a global variable
+globalThis.fetch = fetch as any
+
+// so i feel that [1,2,3,4].random() is nicer than random([1,2,3,4]) i guess
 globalThis.Array.prototype.random = function () {
   return this[Math.floor(Math.random() * this.length)]
 }
@@ -29,9 +35,15 @@ class Bot extends Trollsmile<Message, CommandObj> {
         intents: [Intents.NON_PRIVILEGED]
       }
     })
+
     this.client.on('message', message => {
       this.emit('message', message)
     })
+
+    this.client.on('ready', () => {
+      this.activityChanger(900000)
+    })
+
     this.on('output', ([out, message]) => {
       message.channel.send(out)
     })
@@ -51,12 +63,9 @@ class Bot extends Trollsmile<Message, CommandObj> {
     })
     this.client.login() // process.env.DISCORD_TOKEN
     this.load_cmds()
-    this.client.on('ready', () => {
-      this.activityChanger()
-    })
   }
   async load_cmds () {
-    const files_in_commands = await rreaddir('./commands/')
+    const files_in_commands = await recursive_readdir('./commands/')
     const commands = files_in_commands.map(file => path.resolve(file)).filter(file => file.endsWith('.js'))
     commands.forEach(async (file, i) => {
       console.log('Importing', file, `${i + 1}/${commands.length}`)
@@ -69,23 +78,35 @@ class Bot extends Trollsmile<Message, CommandObj> {
       this.commands.set(basename(file, '.js'), command)
     })
   }
-  activityChanger () {
+  /**
+   * trollsmile funny playing
+   * 
+   * @param ms The amount of time in milliseconds trollsmile should wait before updating the activity again
+   */
+  activityChanger (ms: number) {
     // activityChanger from esmBot, also known as "the gamer code"
     const message = all.random()
     console.log('trollsmile:', message)
     this.client.user!.setActivity(message, {
       type: 'LISTENING'
     })
-    setTimeout(this.activityChanger.bind(this), 900000)
+    setTimeout(() => this.activityChanger(ms), ms)
   }
 }
 
-if (isMain(import.meta)) {
+// //====================================================\\
+//                    LOADER
+//        For when trollsmile is ran directly.
+// \\====================================================//
+if (is_main(import.meta)) {
   // replit redirect
+  // replit (or cron idk) requires there to be a web server
+  // replit sets REPLIT_DB_URL in the env
+  // so that's how we are detecting it
   if (process.env.REPLIT_DB_URL) {
-    createServer((_, res) => {
+    server((_, res) => {
       res.writeHead(200, {
-        'Content-Type': 'text/html'
+        'Content-Type': 'text/html',
       })
       res.write(
         `<meta http-equiv="refresh" content="0;url=https://troIIsmile.github.io">`
@@ -93,16 +114,19 @@ if (isMain(import.meta)) {
       res.end()
     }).listen(8080)
   }
-  if (existsSync('./.env')) {
+
+  // dotenv implementation
+  // because i don't like having more modules installed™
+  if (exists('./.env')) {
     Object.assign(process.env,
       Object.fromEntries(
-        // Overwrite the env with the .env file
-        readFile('./.env', 'utf-8')
-          .split('\n') // split the file into lines
-          .filter(line => !line.startsWith('#') && line) // remove comments and spacing
-          .map(line => line.split('=')) // split the lines into key:value pairs
+        read_file('./.env', 'utf-8')
+          .split('\n')
+          .filter(line => !line.startsWith('#') && line)
+          .map(line => line.split('='))
       ))
   }
+
   new Bot('-')
 }
 
