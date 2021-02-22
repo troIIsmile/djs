@@ -25,7 +25,6 @@
     "discord.js": "^12.5.1",
     "fs": "^0.0.1-security",
     "google-tts-api": "^2.0.1",
-    "nintendo-switch-eshop": "^4.0.0",
     "node": "^15.8.0",
     "node-fetch": "^2.6.1",
     "trollsmile-core": "^4.0.0",
