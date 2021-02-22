@@ -16,7 +16,30 @@ function chunk (array: any[], size: number = 1): Array<any> {
   }, [])
 }
 export function run (this: Bot, message: Message, args: string[]): MessageOptions {
-  const page = parseInt(args.join('')) || 1
+  const page = args.join('') ? parseInt(args.join('')) : 1
+  if (Number.isNaN(page)) {
+    const name = this.getCommandName(args.join(' '))
+    if (name) {
+      const command = this.commands.get(name)!
+      return {
+        embed: {
+          title: name,
+          description: command.help,
+          fields: command.aliases?.length ? [{
+            name: 'Aliases',
+            value: command.aliases?.join(', ')
+          }] : []
+        }
+      }
+    } else {
+      return {
+        embed: {
+          title: `${this.client.user?.username || ''} Commands`,
+          description: 'That command does not exist.'
+        }
+      }
+    }
+  }
   const commands = Array.from(
     this.commands.entries(),
     ([name, { help: desc, aliases }]) => [name + ((aliases && aliases.length) ? ` (Aliases: ${aliases?.join(', ')})` : ''), desc || '']
