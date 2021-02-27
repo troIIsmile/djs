@@ -21,7 +21,16 @@ globalThis.Array.prototype.random = function () {
   return this[Math.floor(Math.random() * this.length)]
 }
 
-
+/**
+ * "trollsmile winning" - LuaQuack
+ * 
+ * The Bot class is a thin wrapper around trollsmile-core that makes it function on Discord.js.
+ * Get the client with this.client.
+ * 
+ * @since 0.0.1
+ * @license ISC
+ * @author Jack W. <hello@5079.ml> (https://5079.ml)
+ */
 class Bot extends Trollsmile<Message, CommandObj> {
   filter (message: Message) {
     return !message.author.bot

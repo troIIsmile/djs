@@ -1,5 +1,5 @@
 import { exec } from "child_process"
-import { Message } from 'discord.js'
+import { DMChannel, Message, NewsChannel, TextChannel } from 'discord.js'
 import { platform } from "os"
 import { Bot } from '../../utils/types'
 
@@ -9,15 +9,39 @@ const shell = (str: string) => new Promise<string>((resolve, reject) => {
     resolve(stdout)
   })
 })
+
+/**
+ * A step used with the update helper function.
+ */
 interface Step {
+  /**
+   * The name of the step. Used at the end and while the step is running.
+   */
   name: string
+  /**
+   * The thing it runs.
+   * If it is a function, it will run it. It will await if the function is async.
+   * If it is a string, it will run it in the shell and wait for it to finish.
+   * If it is an array of strings, it will run them in the shell in order.,
+   */
   run: ((this: Bot) => void | Promise<void>) | string | string[]
+  /**
+   * @private
+   */
   time?: number
 }
 
-async function update (this: Bot, message: Message, steps: Step[]) {
+/**
+ * A helper function for the update command.
+ * Takes steps and runs them in order and at the end says how long each step took
+ * 
+ * @param this The bot object. See init.ts
+ * @param message 
+ * @param steps 
+ */
+async function update (this: Bot, channel: TextChannel | DMChannel | NewsChannel, steps: Step[]) {
   const brand = `${this.client.user?.username || 'trollsmile'} update`
-  const msg = await message.channel.send({
+  const msg = await channel.send({
     embed: {
       author: {
         name: brand,
@@ -72,7 +96,7 @@ export async function run (
   message: Message
 ): Promise<void> {
   if (message.author.id === process.env.OWNER) {
-    update.call(this, message, [
+    update.call(this, message.channel, [
       {
         name: 'Downloading latest trollsmile...',
         run: ['git fetch origin main', 'git reset --hard origin/main']
