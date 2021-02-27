@@ -40,7 +40,6 @@ function rgbToHex (r: number, g: number, b: number) {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b)
 }
 
-alert(rgbToHex(0, 51, 255)) // #0033ff
 
 /**
  * A helper function for the update command.
