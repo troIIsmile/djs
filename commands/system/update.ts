@@ -71,6 +71,7 @@ async function update (this: Bot, channel: TextChannel | DMChannel | NewsChannel
           name: brand,
           icon_url: this.client.user?.avatarURL() || undefined
         },
+        description: '```\n' + '█'.repeat(((steps.indexOf(step) + 1) / steps.length) * 10).padEnd(10, '▒') + '\n```',
         title: step.name
       }
     })
