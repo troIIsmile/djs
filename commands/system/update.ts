@@ -31,6 +31,17 @@ interface Step {
   time?: number
 }
 
+function componentToHex (c: number) {
+  var hex = c.toString(16)
+  return hex.length == 1 ? "0" + hex : hex
+}
+
+function rgbToHex (r: number, g: number, b: number) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b)
+}
+
+alert(rgbToHex(0, 51, 255)) // #0033ff
+
 /**
  * A helper function for the update command.
  * Takes steps and runs them in order and at the end says how long each step took
@@ -53,8 +64,10 @@ async function update (this: Bot, channel: TextChannel | DMChannel | NewsChannel
 
   for (const step of steps) {
     const step_start = new Date
+    const color = ((steps.indexOf(step) + 1) / steps.length) * 255
     await msg.edit({
       embed: {
+        color: rgbToHex(color, color, color),
         author: {
           name: brand,
           icon_url: this.client.user?.avatarURL() || undefined
