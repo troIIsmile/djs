@@ -94,10 +94,10 @@ class Bot extends Trollsmile<Message, CommandObj> {
    */
   activityChanger (ms: number) {
     // activityChanger from esmBot, also known as "the gamer code"
-    const message = all.random()
-    console.log('trollsmile:', message)
-    this.client.user!.setActivity(message, {
-      type: 'LISTENING'
+    const { type, line } = all.random()
+    console.log('trollsmile:', line)
+    this.client.user!.setActivity(line, {
+      type
     })
     setTimeout(() => this.activityChanger(ms), ms)
   }

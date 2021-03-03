@@ -1,9 +1,11 @@
+import { ActivityType } from "discord.js"
+
 // add more
 interface Nested<Type> {
   [key: string]: Nested<Type> | Type[]
 }
 
-const messages: Nested<string> = {
+const listening: Nested<string> = {
   LOL: [
     'esmBot users whine',
     'Molly crying',
@@ -53,6 +55,13 @@ const messages: Nested<string> = {
     .flat(), // Turn this object into a string[] of 'Author - Song' names
 }
 
+const competing: Nested<string> = {
+  Other: [
+    'moller competition',
+    'a Dream video'
+  ]
+}
+
 const flatten = <Type> (messages: Nested<Type> | Type[]): Type[] => {
   const result = Object.values(messages)
     .map(val => Array.isArray(val) ? val : Object.values(val).flat())
@@ -61,6 +70,17 @@ const flatten = <Type> (messages: Nested<Type> | Type[]): Type[] => {
   return result.some(Array.isArray) ? flatten(result) : result
 }
 
-const all = flatten(messages)
+interface TrollsmileLine { line: string, type: ActivityType }
 
-export { messages, all }
+function to_line (lines: string[], type: ActivityType): TrollsmileLine[] {
+  return lines.map(line => ({
+    line,
+    type
+  }))
+}
+const all: TrollsmileLine[] = [
+  ...to_line(flatten(listening), 'LISTENING'),
+  ...to_line(flatten(competing), 'COMPETING')
+]
+
+export { listening as messages, all }
