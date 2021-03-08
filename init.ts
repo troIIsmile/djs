@@ -9,6 +9,7 @@ import { recursive_readdir } from "./utils/rreaddir.js"
 import fetch from 'node-fetch'
 import { all } from "./messages.js"
 import { isMain as is_main } from "./utils/isMain.js"
+import 'discord-reply'
 
 // So some files don't import node-fetch
 // I actually don't know how it happened
@@ -54,7 +55,8 @@ class Bot extends Trollsmile<Message, CommandObj> {
     })
 
     this.on('output', ([out, message]) => {
-      message.channel.send(out)
+      // @ts-expect-error
+      message.lineReply(out)
     })
 
     this.on('error', ([err, message]) => {

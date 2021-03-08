@@ -24,6 +24,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
     "channel46news": "^1.0.0",
+    "discord-reply": "^0.0.9-a",
     "discord.js": "^12.5.1",
     "fs": "^0.0.1-security",
     "google-tts-api": "^2.0.1",
