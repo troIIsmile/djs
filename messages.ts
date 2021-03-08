@@ -55,13 +55,17 @@ const listening: Nested<string> = {
     .flat(), // Turn this object into a string[] of 'Author - Song' names
 }
 
-const competing: Nested<string> = {
-  Other: [
-    'moller competition',
-    'a Dream video'
-  ]
-}
-
+const competing: string[] = [
+  'moller competition',
+  'a Dream video'
+]
+const watching: string[] = [
+  'you',
+  'YouTube',
+  'paint dry',
+  'vines',
+  `trollsmile ad #${Math.floor(Math.random() * 1000)}`
+]
 const flatten = <Type> (messages: Nested<Type> | Type[]): Type[] => {
   const result = Object.values(messages)
     .map(val => Array.isArray(val) ? val : Object.values(val).flat())
@@ -80,7 +84,8 @@ function to_line (lines: string[], type: ActivityType): TrollsmileLine[] {
 }
 const all: TrollsmileLine[] = [
   ...to_line(flatten(listening), 'LISTENING'),
-  ...to_line(flatten(competing), 'COMPETING')
+  ...to_line(competing, 'COMPETING'),
+  ...to_line(watching, 'WATCHING')
 ]
 
 export { listening as messages, all }
