@@ -21,7 +21,13 @@ export async function run (this: Bot, message: Message, args: string[]): Promise
   }
 
   const connection = await vc.join()
-  connection.play(ytdl(args.join(' '), { quality: 'highestaudio' }))
+  const dispatch = connection.play(ytdl(args.join(' '), { quality: 'highestaudio' }))
+  dispatch.on('debug', info => {
+    console.debug('[VC DEBUG]', info)
+  })
+  dispatch.on('finish', () => {
+    console.log('[VC]', 'Completed audio', args.join(' '))
+  })
   return {
     embed: {
       title: "Playing...",
