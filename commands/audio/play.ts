@@ -35,5 +35,5 @@ export async function run (this: Bot, message: Message, args: string[]): Promise
     }
   }
 }
-export const help = 'A new command'
+export const help = 'molly will BARK your YT videos'
 export const aliases = []
