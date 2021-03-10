@@ -26,6 +26,7 @@
     "channel46news": "^1.0.0",
     "discord-reply": "^0.0.9-a",
     "discord.js": "^12.5.1",
+    "ffmpeg-static": "^4.2.7",
     "fs": "^0.0.1-security",
     "google-tts-api": "^2.0.1",
     "is-roblox-ip": "^1.0.2",
