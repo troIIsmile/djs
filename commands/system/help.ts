@@ -58,11 +58,12 @@ export function run (this: Bot, message: Message, args: string[]): MessageOption
       }
     }
   } : {
-      embed: {
-        title: `${this.client.user?.username || ''} Commands`,
-        description: 'That page does not exist.'
-      }
+    embed: {
+      title: `${this.client.user?.username || ''} Commands`,
+      description: 'That page does not exist.'
     }
+  }
 }
 
+export const aliases = ['cmds']
 export const help = 'Shows a list of all the commands and their descriptions.'
