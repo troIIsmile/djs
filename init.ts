@@ -138,7 +138,7 @@ if (is_main(import.meta)) {
       ))
   }
 
-  new Bot('-')
+  new Bot((process.env.REPLIT_DB_URL || process.env.PORT) ? '-' : 't!')
 }
 
 export default Bot
