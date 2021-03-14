@@ -11,6 +11,11 @@ import { all } from "./messages.js"
 import { isMain as is_main } from "./utils/isMain.js"
 import 'discord-reply'
 
+// setup ffmpeg
+import ffmpegpath from 'ffmpeg-static'
+import fluent from 'fluent-ffmpeg'
+fluent.setFfmpegPath(ffmpegpath)
+
 // So some files don't import node-fetch
 // I actually don't know how it happened
 // But just in case

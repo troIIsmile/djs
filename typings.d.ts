@@ -13,33 +13,39 @@ declare module 'google-tts-api' {
 }
 
 
-interface UnfluffOut {
-  title: string,
-  softTitle: string
-  date: string
-  copyright: string
-  author: string[]
-  publisher: string
-  text: string
-  description: string
-  tags: string[]
-  videos: string[]
-  canonicalLink: string
-  image?: string
-  lang: string
-  links: { text: string, href: string }[]
-  favicon: string
-}
-
-type LazyUnfluff = {
-  [key in keyof UnfluffOut]: () => UnfluffOut[key]
-}
-
-declare const unfluff: {
-  (html: string, lang?: string): UnfluffOut
-  lazy (html: string, lang?: string): LazyUnfluff
-}
 
 declare module 'unfluff' {
+
+  interface UnfluffOut {
+    title: string,
+    softTitle: string
+    date: string
+    copyright: string
+    author: string[]
+    publisher: string
+    text: string
+    description: string
+    tags: string[]
+    videos: string[]
+    canonicalLink: string
+    image?: string
+    lang: string
+    links: { text: string, href: string }[]
+    favicon: string
+  }
+
+  type LazyUnfluff = {
+    [key in keyof UnfluffOut]: () => UnfluffOut[key]
+  }
+
+   const unfluff: {
+    (html: string, lang?: string): UnfluffOut
+    lazy (html: string, lang?: string): LazyUnfluff
+  }
   export = unfluff
+}
+
+declare module 'ffmpeg-static' {
+  const ffmpegpath: string
+  export = ffmpegpath
 }

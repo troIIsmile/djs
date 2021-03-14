@@ -23,10 +23,12 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
+    "@types/fluent-ffmpeg": "^2.1.16",
     "channel46news": "^1.0.0",
     "discord-reply": "^0.0.9-a",
     "discord.js": "^12.5.1",
     "ffmpeg-static": "^4.2.7",
+    "fluent-ffmpeg": "^2.1.2",
     "fs": "^0.0.1-security",
     "google-tts-api": "^2.0.1",
     "is-roblox-ip": "^1.0.2",
