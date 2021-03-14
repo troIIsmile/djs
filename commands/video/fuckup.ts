@@ -29,6 +29,7 @@ export async function run (message: Message): Promise<MessageOptions> {
       .videoBitrate(5)
       .audioBitrate(20)
       .FPS(5)
+      .on('error', reject)
       .on('end', () => {
         message.channel.stopTyping()
         resolve({
