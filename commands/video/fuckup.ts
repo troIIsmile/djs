@@ -1,7 +1,7 @@
 import { Message, MessageOptions } from 'discord.js'
 import Ffmpeg from "fluent-ffmpeg"
 import fetch from "node-fetch"
-import { createReadStream } from "node:fs"
+import { createReadStream } from "fs"
 import { Readable } from 'stream'
 
 
