@@ -65,10 +65,6 @@ async function update (this: Bot, channel: TextChannel | DMChannel | NewsChannel
     const step_start = new Date
     const color = ((steps.indexOf(step) + 1) / steps.length) * 255
     await msg.edit({
-      files: [{
-        name: 'step_' + steps.indexOf(step),
-        attachment: Buffer.from('the troll face')
-      }],
       embed: {
         color: rgbToHex(color, color, color),
         author: {
