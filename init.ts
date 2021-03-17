@@ -115,10 +115,17 @@ class Bot extends Trollsmile<Message, CommandObj> {
 //        For when trollsmile is ran directly.
 // \\====================================================//
 if (is_main(import.meta)) {
-  // replit redirect
-  // replit (or cron idk) requires there to be a web server
-  // replit sets REPLIT_DB_URL in the env
-  // so that's how we are detecting it
+  /*
+    trollsmile is hosted on replit
+    so it would go to sleep after 5 minutes
+    so i used cron-job to ping it every 5 minutes
+    but obviously to ping it i need a web server
+    but i can't host it while developing because uh that breaks Verizon TOS
+    (page 23 of
+    https://www.verizon.com/about/sites/default/files/Verizon-Customer-Agreement-Int-TV-Voice-Prepaid-031221.pdf
+    says "You may not[...]knowingly or unknowingly use the Services to host any type of server")
+    so this is what i do to detect it
+  */
   if (process.env.REPLIT_DB_URL) {
     server((_, res) => {
       res.writeHead(200, {
