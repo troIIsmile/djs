@@ -80,11 +80,19 @@ class Bot extends Trollsmile<Message, CommandObj> {
     this.client.login() // process.env.DISCORD_TOKEN
     this.load_cmds()
   }
+  /**
+   * Reads the commands folder and imports the command and sets aliases
+   * Also logs progress (SIDE EFFECT HOW COOL HOW FUCKING COOL)
+   */
   async load_cmds () {
     const files_in_commands = await recursive_readdir('./commands/')
+    // currently only supports js
+    // MIGHT add Lua support via Fengari
     const commands = files_in_commands.map(file => path.resolve(file)).filter(file => file.endsWith('.js'))
     commands.forEach(async (file, i) => {
       console.log('Importing', file, `${i + 1}/${commands.length}`)
+      // we use cache= to bypass Node's module caching
+      // this allows -update to function
       const command = Object.assign({ path: 'file://' + file }, await import('file://' + file + `?cache=${Math.random()}`))
       if ('aliases' in command) {
         command.aliases.forEach((alias: string) => {
@@ -140,6 +148,7 @@ if (is_main(import.meta)) {
 
   // dotenv implementation
   // because i don't like having more modules installed™
+  // it don't support quotes but who tf cares
   if (exists('./.env')) {
     Object.assign(process.env,
       Object.fromEntries(
@@ -150,7 +159,11 @@ if (is_main(import.meta)) {
       ))
   }
 
-  new Bot((process.env.REPLIT_DB_URL || process.env.PORT) ? '-' : 't!')
+  // OOPS! All Side Effects
+  // also i want a dev prefix
+  // so to detect Glitch/replit I do this terrible thing
+  // and also if someone is using a sane hosting platform i also check NODE_ENV
+  new Bot((process.env.REPLIT_DB_URL || process.env.PORT || process.env.NODE_ENV === 'production') ? '-' : 't!')
 }
 
 export default Bot
