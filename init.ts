@@ -61,7 +61,7 @@ class Bot extends Trollsmile<Message, CommandObj> {
 
     this.on('output', ([out, message]) => {
       // @ts-expect-error
-      message.lineReply(out, false, {})
+      message.lineReply(out)
     })
 
     this.on('error', ([err, message]) => {
