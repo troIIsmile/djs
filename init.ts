@@ -83,23 +83,25 @@ class Bot extends Trollsmile<Message, CommandObj> {
   /**
    * Reads the commands folder and imports the command and sets aliases
    * Also logs progress (SIDE EFFECT HOW COOL HOW FUCKING COOL)
+   * trollsmile currently only supports JS modules
+   * I wanna add support for another language though that would be pretty funny
    */
   async load_cmds () {
     const files_in_commands = await recursive_readdir('./commands/')
-    // currently only supports js
-    // MIGHT add Lua support via Fengari
     const commands = files_in_commands.map(file => path.resolve(file)).filter(file => file.endsWith('.js'))
     commands.forEach(async (file, i) => {
-      console.log('Importing', file, `${i + 1}/${commands.length}`)
+      const command_name = basename(file, '.js')
+      console.log('Importing', command_name, `${i + 1}/${commands.length}`)
       // we use cache= to bypass Node's module caching
-      // this allows -update to function
-      const command = Object.assign({ path: 'file://' + file }, await import('file://' + file + `?cache=${Math.random()}`))
-      if ('aliases' in command) {
-        command.aliases.forEach((alias: string) => {
-          this.aliases.set(alias, basename(file, '.js'))
-        })
-      }
-      this.commands.set(basename(file, '.js'), command)
+      // this allows -update to work
+      // because if we didn't
+      // it would import the version of the module before the update
+      // which would ruin the point of -update
+      const command: CommandObj = Object.assign({ path: 'file://' + file }, await import('file://' + file + `?cache=${Math.random()}`))
+      command.aliases?.forEach((alias: string) => {
+        this.aliases.set(alias, command_name)
+      })
+      this.commands.set(command_name, command)
     })
   }
   /**

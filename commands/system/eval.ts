@@ -11,7 +11,7 @@ export async function run (
     try {
       const code = args.join(' ')
       const evaled = eval(code)
-      const txt = await clean(this, evaled)
+      const txt = await clean(this.client, evaled)
       const msg = `\`\`\`js\n${txt}\n\`\`\``
       if (msg.length <= 2000) return { content: msg }
 
@@ -23,7 +23,7 @@ export async function run (
         }]
       }
     } catch (err) {
-      return { content: `\`ERROR\` \`\`\`xl\n${await clean(this, err)}\n\`\`\`` }
+      return { content: `\`ERROR\` \`\`\`xl\n${await clean(this.client, err)}\n\`\`\`` }
     }
   } else return { content: 'You are not the bot owner.' }
 }
