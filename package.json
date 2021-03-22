@@ -30,7 +30,7 @@
     "ffmpeg-static": "^4.2.8",
     "fluent-ffmpeg": "^2.1.2",
     "fs": "^0.0.1-security",
-    "google-tts-api": "^2.0.1",
+    "google-tts-api": "^2.0.2",
     "is-roblox-ip": "^1.0.2",
     "node": "^15.10.0",
     "node-fetch": "^2.6.1",
