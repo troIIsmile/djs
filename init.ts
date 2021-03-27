@@ -63,7 +63,7 @@ class Bot extends Trollsmile<Message, CommandObj> {
       // @ts-expect-error
       message.lineReply(out)
     })
-
+    this.client.on('error', console.error.bind(console, '[DISCORD ERROR]'))
     this.on('error', ([err, message]) => {
       message.channel.stopTyping()
       message.channel.send({
