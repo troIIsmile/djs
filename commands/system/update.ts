@@ -65,7 +65,7 @@ async function update(
       content: 'Updating...',
       // @ts-ignore
       buttons: steps.map((s, i) => {
-        const completed = i < steps.indexOf(step)
+        const completed = i > steps.indexOf(step)
         return new MessageButton()
           .setStyle(s === step ? 'blurple' : 'gray')
           .setDisabled(!completed)
