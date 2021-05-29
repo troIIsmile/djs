@@ -1,14 +1,16 @@
-import { exec } from "child_process"
+import { exec } from 'child_process'
+import { MessageButton } from 'discord-buttons'
 import { DMChannel, Message, NewsChannel, TextChannel } from 'discord.js'
-import { platform } from "os"
+import { platform } from 'os'
 import { Bot } from '../../utils/types'
 
-const shell = (str: string) => new Promise<string>((resolve, reject) => {
-  exec(str, (err, stdout, stderr) => {
-    if (err) reject(stderr)
-    resolve(stdout)
+const shell = (str: string) =>
+  new Promise<string>((resolve, reject) => {
+    exec(str, (err, stdout, stderr) => {
+      if (err) reject(stderr)
+      resolve(stdout)
+    })
   })
-})
 
 /**
  * A step used with the update helper function.
@@ -31,49 +33,43 @@ interface Step {
   time?: number
 }
 
-function componentToHex (c: number) {
+function componentToHex(c: number) {
   var hex = c.toString(16)
-  return hex.length == 1 ? "0" + hex : hex
+  return hex.length == 1 ? '0' + hex : hex
 }
 
-function rgbToHex (r: number, g: number, b: number) {
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b)
+function rgbToHex(r: number, g: number, b: number) {
+  return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b)
 }
-
 
 /**
  * A helper function for the update command.
  * Takes steps and runs them in order and at the end says how long each step took
- * 
+ *
  * @param this The bot object. See init.ts
- * @param message 
- * @param steps 
+ * @param message
+ * @param steps
  */
-async function update (this: Bot, channel: TextChannel | DMChannel | NewsChannel, steps: Step[]) {
+async function update(
+  this: Bot,
+  channel: TextChannel | DMChannel | NewsChannel,
+  steps: Step[]
+) {
   const brand = `${this.client.user?.username || 'trollsmile'} update`
-  const msg = await channel.send({
-    embed: {
-      author: {
-        name: brand,
-        icon_url: this.client.user?.avatarURL() || undefined
-      },
-      title: 'Update starting...'
-    }
-  })
+  const msg = await channel.send('Update starting...')
 
   for (const step of steps) {
-    const step_start = new Date
-    const color = ((steps.indexOf(step) + 1) / steps.length) * 255
+    const step_start = new Date()
+
     await msg.edit({
-      embed: {
-        color: rgbToHex(color, color, color),
-        author: {
-          name: brand,
-          icon_url: this.client.user?.avatarURL() || undefined
-        },
-        description: '█'.repeat(((steps.indexOf(step) + 1) / steps.length) * 20).padEnd(20, '▒'),
-        title: step.name
-      }
+      content: 'Updating...',
+      // @ts-ignore
+      buttons: steps.map((s, i) => {
+        const completed = i < steps.indexOf(step)
+        return new MessageButton()
+          .setStyle(s === step ? 'blurple' : 'gray')
+          .setDisabled(!completed)
+      })
     })
     if (typeof step.run === 'string') {
       await shell(step.run)
@@ -92,10 +88,15 @@ async function update (this: Bot, channel: TextChannel | DMChannel | NewsChannel
         name: brand,
         icon_url: this.client.user?.avatarURL() || undefined
       },
+      // @ts-ignore
+      buttons: [],
       color: 'GREEN',
-      title: `Update complete! Took ${steps.reduce((a, b) => a + b.time!, 0)}ms`,
+      title: `Update complete! Took ${steps.reduce(
+        (a, b) => a + b.time!,
+        0
+      )}ms`,
       description: 'Restart the bot to reload events and messages.',
-      fields: steps.map(step => ({
+      fields: steps.map((step) => ({
         name: step.name,
         value: `${step.time!}ms`,
         inline: true
@@ -104,10 +105,7 @@ async function update (this: Bot, channel: TextChannel | DMChannel | NewsChannel
   })
 }
 
-export async function run (
-  this: Bot,
-  message: Message
-): Promise<void> {
+export async function run(this: Bot, message: Message): Promise<void> {
   if (message.author.id === process.env.OWNER) {
     update.call(this, message.channel, [
       {
@@ -121,15 +119,15 @@ export async function run (
       {
         name: 'Compiling...',
         run: [
-          (platform() === 'win32'
+          platform() === 'win32'
             ? 'PowerShell -Command "rm commands/**/*.js"'
-            : 'rm commands/**/*.js'),
+            : 'rm commands/**/*.js',
           'npx tsc'
         ]
       },
       {
         name: 'Reloading all commands...',
-        async run () {
+        async run() {
           this.commands.clear()
           this.aliases.clear()
           await this.load_cmds()

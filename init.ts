@@ -1,15 +1,16 @@
 import { Message, Client, Collection, Intents } from 'discord.js'
-import Trollsmile from "trollsmile-core"
-import { CommandObj } from "./utils/types"
+import Trollsmile from 'trollsmile-core'
+import { CommandObj } from './utils/types'
 import process from 'process'
 import path, { basename } from 'path'
-import { existsSync as exists, readFileSync as read_file } from "fs"
-import { createServer as server } from "http"
-import { recursive_readdir } from "./utils/rreaddir.js"
+import { existsSync as exists, readFileSync as read_file } from 'fs'
+import { createServer as server } from 'http'
+import { recursive_readdir } from './utils/rreaddir.js'
 import fetch from 'node-fetch'
-import { all } from "./messages.js"
-import { isMain as is_main } from "./utils/isMain.js"
+import { all } from './messages.js'
+import { isMain as is_main } from './utils/isMain.js'
 import 'discord-reply'
+import buttons from 'discord-buttons'
 
 // setup ffmpeg
 import ffmpegpath from 'ffmpeg-static'
@@ -29,16 +30,16 @@ globalThis.Array.prototype.random = function () {
 
 /**
  * "trollsmile winning" - LuaQuack
- * 
+ *
  * The Bot class is a thin wrapper around trollsmile-core that makes it function on Discord.js.
  * Get the client with this.client.
- * 
+ *
  * @since 0.0.1
  * @license ISC
  * @author Jack W. <hello@5079.ml> (https://5079.ml)
  */
 class Bot extends Trollsmile<Message, CommandObj> {
-  filter (message: Message) {
+  filter(message: Message) {
     return !message.author.bot
   }
   client: Client
@@ -50,8 +51,8 @@ class Bot extends Trollsmile<Message, CommandObj> {
         intents: [Intents.NON_PRIVILEGED]
       }
     })
-
-    this.client.on('message', message => {
+    buttons(this.client) // add button support
+    this.client.on('message', (message) => {
       this.emit('message', message)
     })
 
@@ -86,9 +87,11 @@ class Bot extends Trollsmile<Message, CommandObj> {
    * trollsmile currently only supports JS modules
    * I wanna add support for another language though that would be pretty funny
    */
-  async load_cmds () {
+  async load_cmds() {
     const files_in_commands = await recursive_readdir('./commands/')
-    const commands = files_in_commands.map(file => path.resolve(file)).filter(file => file.endsWith('.js'))
+    const commands = files_in_commands
+      .map((file) => path.resolve(file))
+      .filter((file) => file.endsWith('.js'))
     commands.forEach(async (file, i) => {
       const command_name = basename(file, '.js')
       console.log('Importing', command_name, `${i + 1}/${commands.length}`)
@@ -97,7 +100,10 @@ class Bot extends Trollsmile<Message, CommandObj> {
       // because if we didn't
       // it would import the version of the module before the update
       // which would ruin the point of -update
-      const command: CommandObj = Object.assign({ path: 'file://' + file }, await import('file://' + file + `?cache=${Math.random()}`))
+      const command: CommandObj = Object.assign(
+        { path: 'file://' + file },
+        await import('file://' + file + `?cache=${Math.random()}`)
+      )
       command.aliases?.forEach((alias: string) => {
         this.aliases.set(alias, command_name)
       })
@@ -106,10 +112,10 @@ class Bot extends Trollsmile<Message, CommandObj> {
   }
   /**
    * trollsmile funny playing
-   * 
+   *
    * @param ms The amount of time in milliseconds trollsmile should wait before updating the activity again
    */
-  activityChanger (ms: number) {
+  activityChanger(ms: number) {
     // activityChanger from esmBot, also known as "the gamer code"
     const { type, line } = all.random()
     console.log('trollsmile:', line)
@@ -140,7 +146,7 @@ if (is_main(import.meta)) {
   if (process.env.REPLIT_DB_URL) {
     server((_, res) => {
       res.writeHead(200, {
-        'Content-Type': 'text/html',
+        'Content-Type': 'text/html'
       })
       res.write(
         `<meta http-equiv="refresh" content="0;url=https://troIIsmile.github.io">`
@@ -153,20 +159,28 @@ if (is_main(import.meta)) {
   // because i don't like having more modules installed™
   // it don't support quotes but who tf cares
   if (exists('./.env')) {
-    Object.assign(process.env,
+    Object.assign(
+      process.env,
       Object.fromEntries(
         read_file('./.env', 'utf-8')
           .split('\n')
-          .filter(line => !line.startsWith('#') && line)
-          .map(line => line.split('='))
-      ))
+          .filter((line) => !line.startsWith('#') && line)
+          .map((line) => line.split('='))
+      )
+    )
   }
 
   // OOPS! All Side Effects
   // also i want a dev prefix
   // so to detect Glitch/replit I do this terrible thing
   // and also if someone is using a sane hosting platform i also check NODE_ENV
-  new Bot((process.env.REPLIT_DB_URL || process.env.PORT || process.env.NODE_ENV === 'production') ? '-' : 't!')
+  new Bot(
+    process.env.REPLIT_DB_URL ||
+    process.env.PORT ||
+    process.env.NODE_ENV === 'production'
+      ? '-'
+      : 't!'
+  )
 }
 
 export default Bot
