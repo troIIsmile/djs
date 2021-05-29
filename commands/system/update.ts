@@ -67,7 +67,6 @@ async function update(
       buttons: steps.map((s, i) => {
         return new MessageButton()
           .setStyle(s === step ? 'blurple' : 'gray')
-          .setDisabled(i < steps.indexOf(step))
           .setLabel(s.name)
           .setID('update_' + i)
       })
