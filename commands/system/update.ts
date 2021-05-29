@@ -70,6 +70,7 @@ async function update(
           .setStyle(s === step ? 'blurple' : 'gray')
           .setDisabled(!completed)
           .setLabel(s.name)
+          .setID('update_' + i)
       })
     })
     if (typeof step.run === 'string') {
