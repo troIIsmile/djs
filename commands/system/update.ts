@@ -65,10 +65,9 @@ async function update(
       content: 'Updating...',
       // @ts-ignore
       buttons: steps.map((s, i) => {
-        const completed = i > steps.indexOf(step)
         return new MessageButton()
           .setStyle(s === step ? 'blurple' : 'gray')
-          .setDisabled(!completed)
+          .setDisabled(i < steps.indexOf(step))
           .setLabel(s.name)
           .setID('update_' + i)
       })
@@ -90,8 +89,6 @@ async function update(
         name: brand,
         icon_url: this.client.user?.avatarURL() || undefined
       },
-      // @ts-ignore
-      buttons: [],
       color: 'GREEN',
       title: `Update complete! Took ${steps.reduce(
         (a, b) => a + b.time!,
