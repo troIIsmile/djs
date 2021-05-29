@@ -66,7 +66,9 @@ async function update(
       // @ts-ignore
       buttons: steps.map((s, i) => {
         return new MessageButton()
-          .setStyle(s === step ? 'green' : (i > steps.indexOf(step) ? 'gray' : 'red'))
+          .setStyle(
+            s === step ? 'green' : i > steps.indexOf(step) ? 'gray' : 'red'
+          )
           .setLabel(s.name)
           .setID('update_' + i)
       })
@@ -85,7 +87,12 @@ async function update(
   msg.edit({
     content: 'Updated!',
     // @ts-ignore
-    buttons: [],
+    buttons: steps.map((s, i) =>
+      new MessageButton()
+        .setStyle('green')
+        .setLabel(s.name)
+        .setID('update_' + i)
+    ),
     embed: {
       author: {
         name: brand,
