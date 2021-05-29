@@ -69,6 +69,7 @@ async function update(
         return new MessageButton()
           .setStyle(s === step ? 'blurple' : 'gray')
           .setDisabled(!completed)
+          .setLabel(s.name)
       })
     })
     if (typeof step.run === 'string') {
