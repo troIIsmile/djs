@@ -66,7 +66,7 @@ async function update(
       // @ts-ignore
       buttons: steps.map((s, i) => {
         return new MessageButton()
-          .setStyle(s === step ? 'blurple' : 'gray')
+          .setStyle(s === step ? 'green' : (i > steps.indexOf(step) ? 'gray' : 'red'))
           .setLabel(s.name)
           .setID('update_' + i)
       })
@@ -83,16 +83,16 @@ async function update(
     step.time = new Date().getTime() - step_start.getTime()
   }
   msg.edit({
+    content: 'Updated!',
+    // @ts-ignore
+    buttons: [],
     embed: {
       author: {
         name: brand,
         icon_url: this.client.user?.avatarURL() || undefined
       },
       color: 'GREEN',
-      title: `Update complete! Took ${steps.reduce(
-        (a, b) => a + b.time!,
-        0
-      )}ms`,
+      title: `Took ${steps.reduce((a, b) => a + b.time!, 0)}ms`,
       description: 'Restart the bot to reload events and messages.',
       fields: steps.map((step) => ({
         name: step.name,
