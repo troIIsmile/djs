@@ -28,7 +28,7 @@
     "discord-buttons": "^3.2.1",
     "discord-reply": "^0.0.9-a",
     "discord.js": "^12.5.3",
-    "ffmpeg-static": "^4.3.0",
+    "ffmpeg-static": "^4.4.0",
     "fluent-ffmpeg": "^2.1.2",
     "fs": "^0.0.1-security",
     "google-tts-api": "^2.0.1",
